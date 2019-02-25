@@ -1,0 +1,361 @@
+#include <kipr/botball.h>
+void drive_forward(int msec);
+void drive_backward (int msec);
+void drivestop();
+void buttonbattle();
+void closeblock();
+void codeone();
+void codetwo();
+void button1();
+void button2();
+void button3();
+void pause(int msec);
+void turnRight(int msec);
+void turnLeft(int msec);
+void servoup();
+void servodown();
+void close();
+void line();
+void backstart(int msecs);
+void clawo();
+void smallup();
+void slowturnRight();
+void stopturnRight();
+
+int motoroffset = 3;
+
+int main()
+{
+    servoup();
+    drive_backward(2000);
+    buttonbattle();
+    return(0);
+}
+void drive_forward(msec)
+{
+    motor(0,100);
+    motor(1,100 - motoroffset);
+    msleep(msec);
+    freeze(0);
+    freeze(1);
+    msleep(250);
+}
+void button1()
+{
+    while (digital (9)==0)
+    {
+        if (digital (9)==1)
+        {
+            printf("ready");
+
+
+        }
+        else
+        {
+            motor(0,0);
+        }
+    }
+
+}
+
+void pause(int msec)
+{
+    motor(0,0);
+    msleep(msec);
+}
+void turnRight(int msecs)
+{
+    motor(0,-100);
+    motor(1,100 - motoroffset);
+    msleep(msecs);
+    freeze(0);
+    freeze(1);
+    msleep(250);
+}
+void button2()
+{
+    while (digital (0)==0)
+    {
+        if (digital (0)==1)
+        {
+            printf("hit");
+        }
+        else
+        {
+            motor(0,10);
+            motor(1,10);
+            msleep(1000);
+        }
+    }
+
+}
+void drivestop()
+{
+    drive_forward(1000);
+    pause(100);
+    drive_forward(1000);
+    pause(100);
+    drive_forward(1000);
+    pause(100);
+    drive_forward(1000);
+    pause(100);
+    drive_forward(1000);
+    pause(100);
+    drive_forward(1000);
+    pause(100);
+    drive_forward(1000);
+    pause(100);
+
+}
+void drive_backward(msec)
+{
+    motor(0,-100);
+    motor(1,-100 + motoroffset);
+    msleep(msec);
+    freeze(0);
+    freeze(1);
+    msleep(250);
+}
+void turnLeft(msecs)
+{
+    motor(0,100);
+    motor(1,-100 + motoroffset);
+    msleep(msecs);
+    freeze(0);
+    freeze(1);
+    msleep(250);
+}
+void servoup()
+{
+    enable_servos();
+    set_servo_position(2, 1817);
+    set_servo_position(0, 1317);
+    wait_for_milliseconds(1000);
+    disable_servos();
+}
+void  servodown()
+{
+    enable_servos();
+    set_servo_position(2, 635);
+    wait_for_milliseconds(1000);
+    disable_servos();
+}
+void close()
+{ 
+    enable_servos();
+    set_servo_position(0, 407);
+    wait_for_milliseconds(1000);
+    disable_servos();
+}
+void line()
+{
+    while(analog(5) < 1500 || analog(0) < 1500)
+    {
+        if(analog(5) < 1500)
+        {
+            motor(1,100);
+            motor(0,90);
+        }
+        else
+        {
+            motor(1,90);
+            motor(0,100);
+        }
+    }
+}
+void backstart(msecs)
+{
+    motor(0,-10);
+    motor(1,-10);
+    msleep(msecs);
+    motor(0,0);
+    motor(1,0);
+    msleep(10);
+}
+void clawo()
+{
+    enable_servos();
+    set_servo_position(0, 1617);
+    wait_for_milliseconds(1000);
+    disable_servos();
+}
+void smallup()
+{
+    enable_servos();
+    set_servo_position(2, 845);
+    wait_for_milliseconds(1000);
+    disable_servos();
+}
+void button3()
+{
+
+    while (digital (1)==0)
+    {
+        if (digital (1)==1)
+        {
+            printf("2");
+        }
+        else
+        {
+            motor(0,0);
+        }
+    }
+}
+void buttonbattle()
+{
+    while (digital (2)==0)
+    {
+        if (digital (9)==1)
+        {
+            printf("hit");
+            codeone();
+        }
+        if (digital (1)==1)
+        {
+            printf("miss");
+            codetwo();
+        }
+    }
+}
+void codeone()
+{
+    pause(7000);
+    drive_forward(100);
+    pause(10);
+    turnRight(550);
+
+    drive_forward(6000);
+    turnLeft(580);
+    drive_backward(1000);
+    backstart(1000);
+    drive_forward(3000);
+    turnLeft(580);
+    drive_backward(1500);
+    servodown();///phase two
+    line();
+    drive_backward(2500);
+    servoup();
+    turnLeft(580);
+    servodown();
+    drive_forward(100);
+    close();
+    drive_backward(100);
+    turnRight(580);
+    drive_forward(1000);
+    clawo();
+    drive_forward(1500);
+    drive_backward(2000);
+    turnLeft(550);
+    servoup();//phase three
+    drive_forward(2500);
+    turnRight(580);
+    drive_forward(1000);
+    servodown();
+    close();
+    smallup();
+    turnRight(550);
+    drive_forward(3000);
+}
+void codetwo()
+{
+    pause(5000);
+    drive_forward(100);
+    pause(10);
+    turnRight(550);
+
+    drive_forward(6000);
+    turnLeft(580);
+    drive_backward(1000);
+    backstart(1000);
+    drive_forward(3000);
+    turnLeft(580);
+    drive_backward(1500);
+
+    servodown();///phase two poms and am.
+    line();
+    close();
+    stopturnRight();
+    drive_forward(620);
+    drive_backward(620);
+    servoup();
+    turnLeft(250);
+    drive_backward(2500);
+    turnLeft(580);
+    servodown();///                    start       am.
+    drive_forward(500);
+    close();
+    drive_backward(500);
+    turnRight(580);
+    line();
+    drive_backward(300);
+    clawo();
+    stopturnRight();
+    drive_forward(620);///             end        am.
+    drive_backward(620);
+    servoup();
+    turnLeft(300);
+    servodown();
+    /*
+    drive_forward(100);
+    turnRight(180);
+    drive_forward(800);
+    turnRight(100);
+    close();
+    drive_backward(1500);
+    turnRight(100);
+    clawo();
+    drive_forward(1400);
+    servoup();
+    drive_backward(1400);
+
+    turnLeft(300);
+    */
+    turnLeft(550);
+    
+    servoup();//phase three firetruck
+    drive_forward(2200);
+    turnRight(580);
+    servodown();
+    closeblock();
+    smallup();
+    turnRight(550);
+    drive_forward(2200);
+    turnLeft(550);
+    drive_forward(500);
+    clawo();
+    
+    drive_backward(500);//phase 4 fire fighters
+    turnLeft(580);
+    drive_forward(1900);
+    turnRight(550);
+    servodown();
+    drive_forward(1200);    
+    close();
+    smallup();
+}
+void slowturnRight()
+{
+    motor(0,-80);
+    motor(1,80 - motoroffset);
+    msleep(100);
+    freeze(0);
+    freeze(1);
+    msleep(250);
+    motor(0,50);
+    motor(1,50 - motoroffset);
+    msleep(100);
+    freeze(0);
+    freeze(1);
+    msleep(250);
+}
+void stopturnRight()
+{
+    slowturnRight();
+    slowturnRight();
+    slowturnRight();
+}
+void closeblock()
+{
+    set_servo_position(0,929);
+    wait_for_milliseconds(1000);
+}
